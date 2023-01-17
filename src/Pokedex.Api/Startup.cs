@@ -7,15 +7,15 @@ public class Startup
 
     public Startup(WebApplicationBuilder builder)
     {
-        this._configuration = builder.Configuration;
-        this._services = builder.Services;
+        _configuration = builder.Configuration;
+        _services = builder.Services;
     }
 
     public void ConfigureServices()
     {
-        this._services.AddControllers();
-        this._services.AddEndpointsApiExplorer();
-        this._services.AddSwaggerGen();
+        _services.AddControllers();
+        _services.AddEndpointsApiExplorer();
+        _services.AddSwaggerGen(options => options.EnableAnnotations());
     }
 
     public void ConfigureApplication(IApplicationBuilder app)
