@@ -16,6 +16,7 @@ public class Startup
         _services.AddControllers();
         _services.AddEndpointsApiExplorer();
         _services.AddSwaggerGen(options => options.EnableAnnotations());
+        _services.AddAutoMapper(GetType().Assembly);
     }
 
     public void ConfigureApplication(IApplicationBuilder app)
