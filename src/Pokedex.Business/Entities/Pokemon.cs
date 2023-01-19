@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using Pokedex.Business.Core;
 using Pokedex.Business.Enums;
+using Pokedex.Business.Validations;
 
 namespace Pokedex.Business.Entities;
 
@@ -35,6 +36,7 @@ public class Pokemon : Entity
 
     public override ValidationResult Validate()
     {
-        return new ValidationResult();
+        return new PokemonValidation()
+            .Validate(this);
     }
 }

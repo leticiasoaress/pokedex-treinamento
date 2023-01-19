@@ -27,7 +27,7 @@ public class PokedexController : ControllerBase
     public async Task<IActionResult> AddPokemon([FromBody] PokemonModel model)
     {
         var pokemon = _mapper.Map<Pokemon>(model);
-        var pokemonId = await _pokedexService.AddPokemon(pokemon);
+        var pokemonId = await _pokedexService.AddPokemonAsync(pokemon);
 
         return Created(
             $"{HttpContext.Request.Path}/{pokemonId}",
@@ -40,7 +40,7 @@ public class PokedexController : ControllerBase
     public async Task<IActionResult> UpdatePokemon([FromBody] PokemonModel model)
     {
         var pokemon = _mapper.Map<Pokemon>(model);
-        await _pokedexService.UpdatePokemon(pokemon);
+        await _pokedexService.UpdatePokemonAsync(pokemon);
         
         return NoContent();
     }
@@ -50,7 +50,7 @@ public class PokedexController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeletePokemon(Guid pokemonId)
     {
-        await _pokedexService.DeletePokemon(pokemonId);
+        await _pokedexService.DeletePokemonAsync(pokemonId);
 
         return NoContent();
     }
