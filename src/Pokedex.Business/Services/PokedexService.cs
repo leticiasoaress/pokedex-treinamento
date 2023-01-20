@@ -34,13 +34,42 @@ public class PokedexService : IPokedexService
         return pokemon.Id;
     }
 
-    public Task DeletePokemonAsync(Guid pokemonId)
+    public async Task UpdatePokemonAsync(Pokemon pokemon)
     {
-        throw new NotImplementedException();
+        var validation = pokemon.Validate();
+        if (!validation.IsValid)
+        {
+            // Notificar erro para usuario 
+            return;
+        }
+
+        var hasPokemon = await _pokemonRepository.HasPokemonAsync(pokemon.Id);
+        if (!hasPokemon)
+        {
+            // Notificar erro para usuario 
+            return;
+        }
+
+        var registredPokemon = await _pokemonRepository.GetByNameAsync(pokemon.Name);
+        if (registredPokemon != null
+            && registredPokemon.Id != pokemon.Id)
+        {
+            // Notificar erro para usuario 
+            return;
+        }
+
+        _pokemonRepository.Update(pokemon);
     }
 
-    public Task UpdatePokemonAsync(Pokemon pokemon)
+    public async Task DeletePokemonAsync(Guid pokemonId)
     {
-        throw new NotImplementedException();
+        var hasPokemon = await _pokemonRepository.HasPokemonAsync(pokemonId);
+        if (!hasPokemon)
+        {
+            // Notificar erro para usuario 
+            return;
+        }
+
+        _pokemonRepository.Delete(pokemonId);
     }
 }
