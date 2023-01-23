@@ -1,15 +1,20 @@
-﻿using Pokedex.Business.Entities;
+﻿using Pokedex.Business.Core.Notifications;
+using Pokedex.Business.Entities;
 using Pokedex.Business.Repositories;
 
 namespace Pokedex.Business.Services;
 
 public class PokedexService : IPokedexService
 {
+    private readonly INotifier _notifier;
     private readonly IPokemonRepository _pokemonRepository;
 
-    public PokedexService(IPokemonRepository pokemonRepository)
+    public PokedexService(
+        IPokemonRepository pokemonRepository,
+        INotifier notifier)
     {
         _pokemonRepository = pokemonRepository;
+        _notifier = notifier;
     }
 
     public async Task<Guid?> AddPokemonAsync(Pokemon pokemon)
@@ -17,14 +22,14 @@ public class PokedexService : IPokedexService
         var validation = pokemon.Validate();
         if (!validation.IsValid)
         {
-            // Notificar erro para usuario 
+            _notifier.Notify(validation);
             return null;
         }
 
         var registredPokemon = await _pokemonRepository.GetByNameAsync(pokemon.Name);
         if (registredPokemon != null)
         {
-            // Notificar erro para usuario 
+            _notifier.Notify("Já existe um pokémon cadastrado com esse nome.");
             return null;
         }
 
@@ -39,14 +44,14 @@ public class PokedexService : IPokedexService
         var validation = pokemon.Validate();
         if (!validation.IsValid)
         {
-            // Notificar erro para usuario 
+            _notifier.Notify(validation);
             return;
         }
 
         var hasPokemon = await _pokemonRepository.HasPokemonAsync(pokemon.Id);
         if (!hasPokemon)
         {
-            // Notificar erro para usuario 
+            _notifier.Notify("Não foi possivel encontrar o pokémon informado.");
             return;
         }
 
@@ -54,7 +59,7 @@ public class PokedexService : IPokedexService
         if (registredPokemon != null
             && registredPokemon.Id != pokemon.Id)
         {
-            // Notificar erro para usuario 
+            _notifier.Notify("Não é possível alterar o nome desse pokémon, pois já existe um outro cadastro com o mesmo nome.");
             return;
         }
 
@@ -66,7 +71,7 @@ public class PokedexService : IPokedexService
         var hasPokemon = await _pokemonRepository.HasPokemonAsync(pokemonId);
         if (!hasPokemon)
         {
-            // Notificar erro para usuario 
+            _notifier.Notify("Não foi possivel encontrar o pokémon informado.");
             return;
         }
 

@@ -24,6 +24,7 @@ public class PokedexController : ControllerBase
     [HttpPost]
     [SwaggerOperation("Cadastrar pokémon.")]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> AddPokemon([FromBody] PokemonModel model)
     {
         var pokemon = _mapper.Map<Pokemon>(model);
@@ -41,7 +42,7 @@ public class PokedexController : ControllerBase
     {
         var pokemon = _mapper.Map<Pokemon>(model);
         await _pokedexService.UpdatePokemonAsync(pokemon);
-        
+
         return NoContent();
     }
 
