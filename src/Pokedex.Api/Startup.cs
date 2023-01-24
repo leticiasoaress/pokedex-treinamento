@@ -21,6 +21,7 @@ public class Startup
         _services.AddSwaggerGen(options => options.EnableAnnotations());
         _services.AddSmartNotification();
         _services.RegisterDI();
+        _services.AddDbContexts(_configuration);
         _services.AddAutoMapper(GetType().Assembly);
     }
 
