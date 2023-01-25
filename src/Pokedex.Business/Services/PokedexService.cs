@@ -34,7 +34,7 @@ public class PokedexService : IPokedexService
         }
 
         await _pokemonRepository.AddAsync(pokemon);
-        // Comitar a operação
+        await _pokemonRepository.CommitAsync();
 
         return pokemon.Id;
     }
@@ -64,6 +64,7 @@ public class PokedexService : IPokedexService
         }
 
         _pokemonRepository.Update(pokemon);
+        await _pokemonRepository.CommitAsync();
     }
 
     public async Task DeletePokemonAsync(Guid pokemonId)
@@ -76,5 +77,6 @@ public class PokedexService : IPokedexService
         }
 
         _pokemonRepository.Delete(pokemonId);
+        await _pokemonRepository.CommitAsync();
     }
 }

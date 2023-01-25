@@ -1,4 +1,5 @@
 ﻿using Pokedex.Business.Entities;
+using Pokedex.Business.Queries;
 
 namespace Pokedex.Business.Services;
 
