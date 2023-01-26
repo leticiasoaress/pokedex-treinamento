@@ -65,9 +65,14 @@ public class PokedexController : ControllerBase
     [HttpGet("{pokemonId:guid}")]
     [SwaggerOperation("Obter pokémon por id.")]
     [ProducesResponseType(typeof(PokemonModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPokemonById(Guid pokemonId)
     {
         var pokemon = await _pokemonRepository.GetByIdAsync(pokemonId);
+
+        if (pokemon is null)
+            return NotFound();
+
         var result = _mapper.Map<PokemonModel>(pokemon);
 
         return Ok(result);

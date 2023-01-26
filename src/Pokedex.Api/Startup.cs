@@ -1,4 +1,5 @@
 ﻿using Pokedex.Api.Configurations;
+using Pokedex.Api.Middlewares;
 using Pokedex.Business.Core.Notifications;
 
 namespace Pokedex.Api;
@@ -29,6 +30,8 @@ public class Startup
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+
+        app.UseMiddleware<ExceptionMiddleware>();
 
         app.UseHttpsRedirection();
         app.UseRouting();
