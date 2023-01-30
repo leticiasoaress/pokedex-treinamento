@@ -10,18 +10,23 @@ public static class IoC
     {
         services.AddServices();
         services.AddRepositories();
+
         return services;
     }
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IPokedexService, PokedexService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+
         return services;
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IPokemonRepository, PokemonRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+
         return services;
     }
 }

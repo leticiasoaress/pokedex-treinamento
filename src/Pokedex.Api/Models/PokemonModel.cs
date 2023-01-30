@@ -4,6 +4,7 @@ namespace Pokedex.Api.Models;
 
 public class PokemonModel
 {
+    public Guid Id { get; set; }
     public string Name { get; set; } = default!;
     public Guid CategoryId { get; set; }
     public Gender Gender { get; set; }

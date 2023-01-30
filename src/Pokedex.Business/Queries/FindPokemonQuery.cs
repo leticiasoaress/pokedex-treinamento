@@ -1,6 +1,8 @@
-﻿namespace Pokedex.Business.Queries;
+﻿using Pokedex.Business.Core.Pagination;
 
-public class FindPokemonQuery
+namespace Pokedex.Business.Queries;
+
+public class FindPokemonQuery : PagedInputModel
 {
     public string Name { get; set; } = default!;
     public Guid? CategoryId { get; set; }

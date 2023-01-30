@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Pokedex.Business.Core.Pagination;
 using Pokedex.Business.Entities;
 using Pokedex.Business.Queries;
 using Pokedex.Business.Repositories;
@@ -49,16 +50,23 @@ public class PokemonRepository : RepositoryBase, IPokemonRepository
             .AnyAsync(p => p.Id == pokemonId);
     }
 
-    public async Task<IEnumerable<Pokemon>> FindAsync(FindPokemonQuery query)
+    public async Task<PagedList<Pokemon>> FindAsync(FindPokemonQuery query)
     {
         var findQuery = _efContext.Pokemons.AsQueryable();
 
         if (query.HasName)
-            findQuery = findQuery.Where(p => p.Name == query.Name);
+            findQuery = findQuery.Where(p => p.Name.Contains(query.Name));
 
         if (query.HasCategory)
             findQuery = findQuery.Where(p => p.CategoryId == query.CategoryId);
 
-        return await findQuery.ToListAsync();
+        var count = await findQuery.CountAsync();
+
+        var data = await findQuery
+            .Skip(query.Skip)
+            .Take(query.PageSize)
+            .ToListAsync();
+
+        return new PagedList<Pokemon>(query.PageIndex, query.PageSize, count, data);
     }
 }
